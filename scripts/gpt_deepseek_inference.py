@@ -1,3 +1,4 @@
+# For OpenAI GPT and Deepseek inference
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
