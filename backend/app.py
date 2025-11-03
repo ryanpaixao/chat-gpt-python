@@ -14,69 +14,13 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+# Read JSON question file
+with open('./text_data/en/questions.json', 'r') as file:
+    questions = json.load(file)
+
 @app.route('/api/questions', methods=['GET'])
 def get_questions():
     """Endpoint to get all questions"""
-    questions = [
-        {
-            'id': 1,
-            'question': "What's the occasion?",
-            'field_name': 'occasion',
-            'type': 'text',
-            'placeholder': 'e.g., Birthday, Anniversary, Christmas'
-        },
-        {
-            'id': 2,
-            'question': "When is the Event Date?",
-            'field_name': 'event_date',
-            'type': 'date',
-            'placeholder': 'YYYY-MM-DD'
-        },
-        {
-            'id': 3,
-            'question': "What is the location of the recipient?",
-            'field_name': 'location',
-            'type': 'text',
-            'placeholder': 'e.g., New York, USA'
-        },
-        {
-            'id': 4,
-            'question': "How old is the recipient?",
-            'field_name': 'recipient_age',
-            'type': 'number',
-            'placeholder': 'Enter age'
-        },
-        {
-            'id': 5,
-            'question': "What's your relationship with the recipient?",
-            'field_name': 'relationship',
-            'type': 'text',
-            'placeholder': 'e.g., Friend, Family, Colleague'
-        },
-        {
-            'id': 6,
-            'question': "What are the recipient's interests and hobbies?",
-            'field_name': 'interests',
-            'type': 'array',
-            'placeholder': 'Add interests one by one',
-            'description': 'Press Enter after each interest to add it to the list'
-        },
-        {
-            'id': 7,
-            'question': "What does the recipient dislike or already own?",
-            'field_name': 'dislikes',
-            'type': 'array',
-            'placeholder': 'Add dislikes one by one',
-            'description': 'Press Enter after each item to add it to the list'
-        },
-        {
-            'id': 8,
-            'question': "What's your maximum budget?",
-            'field_name': 'max_budget',
-            'type': 'number',
-            'placeholder': 'Enter amount in R$'
-        }
-    ]
     return jsonify(questions)
 
 @app.route('/api/submit', methods=['POST'])
