@@ -18,10 +18,20 @@ def test_api():
         "location": "New York",
         "recipient_age": 30,
         "relationship": "Friend",
-        "interests": "Reading, Hiking, Coffee, Technology",
-        "dislikes": "Chocolate, Scented candles",
+        "interests": ["Reading", "Hiking", "Coffee", "Technology"],
+        "dislikes": ["Chocolate", "Scented" "candles"],
         "max_budget": 100.0
     }
+    # sample_data = {
+    #     "occasion": "Anniversary",
+    #     "event_date": "2026-03-17",
+    #     "location": "Belo Horizonte",
+    #     "recipient_age": 39,
+    #     "relationship": "Girlfriend",
+    #     "interests": ["Style", "Anime", "Music"],
+    #     "dislikes": ["Olives", "Grapes"],
+    #     "max_budget": 500.0
+    # }
 
     # Submit answers
     response = requests.post(f'{BASE_URL}/submit', 

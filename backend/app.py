@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from models import db, GiftRecommendation
 from datetime import datetime
+import json
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gift_recommendations.db'
@@ -56,15 +57,17 @@ def get_questions():
             'id': 6,
             'question': "What are the recipient's interests and hobbies?",
             'field_name': 'interests',
-            'type': 'textarea',
-            'placeholder': 'e.g., Reading, Sports, Cooking, Music'
+            'type': 'array',
+            'placeholder': 'Add interests one by one',
+            'description': 'Press Enter after each interest to add it to the list'
         },
         {
             'id': 7,
             'question': "What does the recipient dislike or already own?",
             'field_name': 'dislikes',
-            'type': 'textarea',
-            'placeholder': 'Things to avoid or items they already have'
+            'type': 'array',
+            'placeholder': 'Add dislikes one by one',
+            'description': 'Press Enter after each item to add it to the list'
         },
         {
             'id': 8,
@@ -88,7 +91,13 @@ def submit_answers():
         for field in required_fields:
             if field not in data:
                 return jsonify({'error': f'Missing field: {field}'}), 400
-            
+
+        # Validate that interests and dislikes are arrays
+        if not isinstance(data['interests'], list):
+            return jsonify({'error': 'Interests must be an array'}), 400
+        if not isinstance(data['dislikes'], list):
+            return jsonify({'error': 'Dislikes must be an array'}), 400
+
         # Create new recommendation
         recommendation = GiftRecommendation(
             occasion=data['occasion'],
@@ -101,12 +110,17 @@ def submit_answers():
             max_budget=data['max_budget']
         )
 
+        # Set interests and dislikes using array -> JSON methods
+        recommendation.set_interests(data['interests'])
+        recommendation.set_dislikes(data['dislikes'])
+
         db.session.add(recommendation)
         db.session.commit()
 
         return jsonify({
             'message': 'Recommendation saved successfully!',
-            'id': recommendation.id
+            'id': recommendation.id,
+            'data': recommendation.to_dict()
         }), 201
     
     except Exception as e:

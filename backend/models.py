@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import json
 
 db = SQLAlchemy()
 
@@ -14,6 +15,22 @@ class GiftRecommendation(db.Model):
     dislikes = db.Column(db.Text, nullable=False)
     max_budget = db.Column(db.Float, nullable=False)
     created_at = db. Column(db.DateTime, default=datetime.utcnow)
+
+    def set_interests(self, interests_list):
+        """Convert list to JSON string for storage"""
+        self.interests = json.dumps(interests_list)
+
+    def get_interests(self):
+        """Convert JSON string back to list"""
+        return json.loads(self.interests) if self.interests else []
+    
+    def set_dislikes(self, dislikes_list):
+        """Convert list to JSON string for storage"""
+        self.dislikes = json.dumps(dislikes_list)
+
+    def get_dislikes(self):
+        """Convert JSON string back to list"""
+        return json.loads(self.dislikes) if self.dislikes else []
 
     def to_dict(self):
         return {
