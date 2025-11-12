@@ -1,11 +1,13 @@
-from flask_sqlalchemy import SQLAlchemy
+from app import db
 from datetime import datetime
 import json
+import uuid
 
-db = SQLAlchemy()
+def generate_uuid():
+    return str(uuid.uuid4())
 
 class GiftRecommendation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True, default=generate_uuid)
     occasion = db.Column(db.String(100), nullable=False)
     event_date = db.Column(db.Date, nullable=False)
     location = db.Column(db.String(100), nullable=False)
