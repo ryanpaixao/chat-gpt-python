@@ -4,34 +4,42 @@ import json
 BASE_URL = 'http://localhost:5000/api'
 
 def test_api():
-    # Get questions
+    # Test getting questions
+    print("Testing questions endpoint...")
     response = requests.get(f'{BASE_URL}/questions')
-    print("Available questions:")
-    for q in response.json():
-        print(f"{q['id']}. {q['question']}")
-    print("\n")
+    if response.status_code == 200:
+        print("Questions endpoint working.\n")
+        print("Available questions:\n")
+        for q in response.json():
+            print(f"{q['id']}. {q['question']}\n")
+    else:
+        print("Questions endpoint failed")
+        return
+    
+    # Test submitting a recommendation
+    print("\nTesting submission endpoint")
 
     # Sample data for testing
-    # sample_data = {
-    #     "occasion": "Birthday",
-    #     "event_date": "2024-12-25",
-    #     "location": "New York",
-    #     "recipient_age": 30,
-    #     "relationship": "Friend",
-    #     "interests": ["Reading", "Hiking", "Coffee", "Technology"],
-    #     "dislikes": ["Chocolate", "Scented" "candles"],
-    #     "max_budget": 100.0
-    # }
     sample_data = {
-        "occasion": "Anniversary",
-        "event_date": "2026-03-17",
-        "location": "Belo Horizonte",
-        "recipient_age": 39,
-        "relationship": "Girlfriend",
-        "interests": ["Style", "Anime", "Music"],
-        "dislikes": ["Olives", "Grapes"],
-        "max_budget": 500.0
+        "occasion": "Birthday",
+        "event_date": "2024-12-25",
+        "location": "New York",
+        "recipient_age": 30,
+        "relationship": "Friend",
+        "interests": ["Reading", "Hiking", "Coffee", "Technology"],
+        "dislikes": ["Chocolate", "Scented" "candles"],
+        "max_budget": 100.0
     }
+    # sample_data = {
+    #     "occasion": "Anniversary",
+    #     "event_date": "2026-03-17",
+    #     "location": "Belo Horizonte",
+    #     "recipient_age": 39,
+    #     "relationship": "Girlfriend",
+    #     "interests": ["Style", "Anime", "Music"],
+    #     "dislikes": ["Olives", "Grapes"],
+    #     "max_budget": 500.0
+    # }
 
     # Submit answers
     response = requests.post(f'{BASE_URL}/submit', 
@@ -41,16 +49,44 @@ def test_api():
     if response.status_code == 201:
         print("Successfully submitted answers!")
         result = response.json()
-        print(f"Recommendation ID: {result['id']}")
-    else:
-        print(f"Error: {response.json()}")
+        recommendation_id = result['id']
+        print(f"Recommendation ID: {recommendation_id}")
 
-    # Get all recommendations
-    print("\nAll stored recommendations:")
+        #Test getting specific recommendation
+        print("\nTesting single recommendation endpoint...")
+        response = requests.get(f'{BASE_URL}/recommendations/{recommendation_id}')
+
+        if response.status_code == 200:
+            print(f"Response: \n {response.json()}\n")
+            print("Single recommendation endpoint working")
+        else:
+            print("Single recommendation endpoint failed")
+
+        # Test generating suggestions
+        print("\nTesting suggestions endpoint...")
+        response = requests.get(f'{BASE_URL}/generate-suggestions/{recommendation_id}')
+        
+        if response.status_code == 200:
+            suggestions = response.json()['suggestions']
+            print(f"Suggestions generated: {len(suggestions)} items")
+
+            for suggestion in suggestions:
+                print(f" - {suggestion}")
+        else:
+            print("Suggestions endpoint failed")
+    else:
+        print(f"Submission failed: {response.json()}")
+
+    # Test getting all recommendations
+    print("\nTesting all recommendations endpoint...")
     response = requests.get(f'{BASE_URL}/recommendations')
-    recommendations = response.json()
-    for rec in recommendations:
-        print(f"ID: {rec['id']}, Occasion: {rec['occasion']}, Budget: ${rec['max_budget']}")
+
+    if response.status_code == 200:
+        recommendations = response.json()
+        print(f"All recommendations endpoint working. Total: {len(recommendations)}")
+    else:
+        print("All recommendations endpoint failed")
+
 
 if __name__ == '__main__':
     test_api()
