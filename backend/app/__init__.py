@@ -11,6 +11,8 @@ def create_app(config_class=Config):
     # Initialize extensions
     db.init_app(app)
 
+    from app import models
+
     # Register blueprints
     from app.routes.questions import bp as questions_bp
     from app.routes.recommendations import bp as recommendations_bp
@@ -21,5 +23,3 @@ def create_app(config_class=Config):
     app.register_blueprint(suggestions_bp)
 
     return app
-
-from app.models import GiftRecommendation

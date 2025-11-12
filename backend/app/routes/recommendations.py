@@ -63,7 +63,7 @@ def submit_answers():
         return jsonify({'error': str(e)}), 500
     
 @bp.route('/api/recommendations', methods=['GET'])
-def get_recommendation():
+def get_recommendations():
     """Endpoint to get all stored recommendations"""
     try:
         recommendations = GiftRecommendation.query.all()

@@ -10,8 +10,9 @@ def test_api():
     if response.status_code == 200:
         print("Questions endpoint working.\n")
         print("Available questions:\n")
-        for q in response.json():
-            print(f"{q['id']}. {q['question']}\n")
+        print(response)
+        # for q in response.json():
+        #     print(f"{q['id']}. {q['question']}\n")
     else:
         print("Questions endpoint failed")
         return
