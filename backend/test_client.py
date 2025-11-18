@@ -4,6 +4,7 @@ import json
 BASE_URL = 'http://localhost:5000/api'
 
 def test_api():
+    # 1)
     # Test getting questions
     print("Testing questions endpoint...")
     response = requests.get(f'{BASE_URL}/questions')
@@ -17,30 +18,31 @@ def test_api():
         print("Questions endpoint failed")
         return
     
+    # 2)
     # Test submitting a recommendation
     print("\nTesting submission endpoint")
 
     # Sample data for testing
-    sample_data = {
-        "occasion": "Birthday",
-        "event_date": "2024-12-25",
-        "location": "New York",
-        "recipient_age": 30,
-        "relationship": "Friend",
-        "interests": ["Reading", "Hiking", "Coffee", "Technology"],
-        "dislikes": ["Chocolate", "Scented" "candles"],
-        "max_budget": 100.0
-    }
     # sample_data = {
-    #     "occasion": "Anniversary",
-    #     "event_date": "2026-03-17",
-    #     "location": "Belo Horizonte",
-    #     "recipient_age": 39,
-    #     "relationship": "Girlfriend",
-    #     "interests": ["Style", "Anime", "Music"],
-    #     "dislikes": ["Olives", "Grapes"],
-    #     "max_budget": 500.0
+    #     "occasion": "Birthday",
+    #     "event_date": "2024-12-25",
+    #     "location": "New York",
+    #     "recipient_age": 30,
+    #     "relationship": "Friend",
+    #     "interests": ["Reading", "Hiking", "Coffee", "Technology"],
+    #     "dislikes": ["Chocolate", "Scented" "candles"],
+    #     "max_budget": 100.0
     # }
+    sample_data = {
+        "occasion": "Anniversary",
+        "event_date": "2026-03-17",
+        "location": "Belo Horizonte",
+        "recipient_age": 39,
+        "relationship": "Girlfriend",
+        "interests": ["Style", "Anime", "Music"],
+        "dislikes": ["Olives", "Grapes"],
+        "max_budget": 500.0
+    }
 
     # Submit answers
     response = requests.post(f'{BASE_URL}/submit', 
@@ -63,18 +65,19 @@ def test_api():
         else:
             print("Single recommendation endpoint failed")
 
+        # test_id = "2b73eee2-099b-46c9-b081-1ccc872835b7"
         # Test generating suggestions
         print("\nTesting suggestions endpoint...")
         response = requests.get(f'{BASE_URL}/generate-suggestions/{recommendation_id}')
         
         if response.status_code == 200:
+            # print(f"TODO: rm me!\n {response.json()}")
             suggestions = response.json()['suggestions']
-            print(f"Suggestions generated: {len(suggestions)} items")
+            print(f"Suggestions generated: {len(suggestions)} items\n\n")
 
-            for suggestion in suggestions:
-                print(f" - {suggestion}")
+            print(f"Suggestions ->\n{suggestions}\n\n")
         else:
-            print("Suggestions endpoint failed")
+            print(f"Suggestions endpoint failed {response.json()}")
     else:
         prettified_res = json.dumps(response.json(), indent=2, ensure_ascii=False)
         print(f"Submission failed: {prettified_res}")
