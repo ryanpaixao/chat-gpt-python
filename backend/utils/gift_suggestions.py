@@ -49,17 +49,6 @@ def generate_prompt(answers):
     print(f"p --> {p}")
 
     prompt = generate_mock_prompt(answers)
-
-    # p_list = [p.gift_generation_context, p.data_collected_from_user.data_collected, "\n"]
-    # user_input = generate_input_list(answers, p.data_collected_from_user)
-    # p_list.append(user_input)
-    # p_list.extend(p.requested_response_format)
-    # p_list.extend([p.user_alignments.alignment[0], answers.interests])
-    # p_list.extend([p.user_alignments.restrictions[0], answers.dislikes])
-    # p_list.extend([p.user_alignments.max_budget[0], answers.max_budget])
-    # p_list.extend(p.user_alignments.justify)
-
-    # prompt = " ".join(p_list)
     
     return prompt
 
@@ -77,7 +66,10 @@ def generate_gift_suggestions(answers):
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
-        contents=client_prompt
+        contents=client_prompt,
+        config={
+            "tools": [{"google_search": {}}]
+        }
     )
 
     print(f"response:\n{response.text}\n\n")
