@@ -76,7 +76,8 @@ def test_api():
         else:
             print("Suggestions endpoint failed")
     else:
-        print(f"Submission failed: {response.json()}")
+        prettified_res = json.dumps(response.json(), indent=2, ensure_ascii=False)
+        print(f"Submission failed: {prettified_res}")
 
     # Test getting all recommendations
     print("\nTesting all recommendations endpoint...")
