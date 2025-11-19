@@ -37,7 +37,18 @@ def generate_mock_prompt(answers):
     - What they definitely dislike or already own: {answers["dislikes"]}
     - User Preferences: Maximum Budget: {answers["max_budget"]}
 
-    Requested Response Format: Generate an output with a file JSON with Results according to the sessions below. Style: "Top 10 selections" (present the 10 best and most suitable options). Structure of each suggestion: Product Name URL Image Short and creative description (explaining why the gift is a good choice for the profile) Estimated Price Range (within the budget) Where to find: product link Task: Based on all the information above, go to Shopee and generate the Top 10 gift recommendations. Make sure the suggestions perfectly align with the interests ({{ $json.formData.interesses }}), respect the restrictions ({{ $json.formData.naoGosta }}) and the maximum budget of R$ {{ $json.formData.orcamento }}. Justify each choice creatively. Return only the list of products, formatted in pure JSON, without additional explanations. The JSON for each product must have the following structure: {{ "url": "product URL", "name": "product name", "image": "product image URL", "description": "product description", "price_range": "product price range", "where_to_find": "real link to the Shopee store" }}
+    Requested Response Format: Generate an output with a file JSON with Results according to the sessions below.
+    Style: "Top 10 selections" (present the 10 best and most suitable options).
+    Structure of each suggestion: Product Name URL Image Short and creative description (explaining why the gift is a good choice for the profile) Estimated Price Range (within the budget) Where to find: product link Task: Based on all the information above, go to Shopee and generate the Top 10 gift recommendations.
+    Make sure the suggestions perfectly align with the interests, respect the restrictions (dislikes) and the maximum budget of R$ {answers["max_budget"]} (in Brazilian Reals).
+    Justify each choice creatively. Return only the list of products, formatted in pure JSON, without additional explanations.
+    The JSON for each product must have the following structure:
+    {{
+        "name": "product name",
+        "description": "product description",
+        "price_range": "product price range",
+        "search_query": "Search query used for this item on Shopee"
+    }}
     """
 
     return mock_prompt
@@ -65,7 +76,7 @@ def generate_gift_suggestions(answers):
     print(f"\n\nclient_prompt:\n{client_prompt}\n\n")
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-2.5-flash-lite",
         contents=client_prompt,
         config={
             "tools": [{"google_search": {}}]
