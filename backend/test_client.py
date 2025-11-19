@@ -10,7 +10,7 @@ def test_api():
     response = requests.get(f'{BASE_URL}/questions')
     if response.status_code == 200:
         print("Questions endpoint working.\n")
-        print("Available questions:\n")
+        print("Question endpoint status :\n")
         print(response)
         # for q in response.json():
         #     print(f"{q['id']}. {q['question']}\n")
@@ -31,7 +31,9 @@ def test_api():
     #     "relationship": "Friend",
     #     "interests": ["Reading", "Hiking", "Coffee", "Technology"],
     #     "dislikes": ["Chocolate", "Scented candles"],
-    #     "max_budget": 100.0
+    #     "max_budget": 100.0,
+    #     "country": "BR",
+    #     "language": "en"
     # }
     sample_data = {
         "occasion": "Anniversary",
@@ -41,7 +43,9 @@ def test_api():
         "relationship": "Girlfriend",
         "interests": ["Style", "Anime", "Music"],
         "dislikes": ["Olives", "Grapes"],
-        "max_budget": 500.0
+        "max_budget": 500.0,
+        "country": "BR",
+        "language": "en"
     }
 
     # Submit answers
@@ -65,7 +69,6 @@ def test_api():
         else:
             print("Single recommendation endpoint failed")
 
-        # test_id = "2b73eee2-099b-46c9-b081-1ccc872835b7"
         # Test generating suggestions
         print("\nTesting suggestions endpoint...")
         response = requests.get(f'{BASE_URL}/generate-suggestions/{recommendation_id}')

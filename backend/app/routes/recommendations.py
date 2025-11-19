@@ -19,7 +19,9 @@ def submit_answers():
             'relationship',
             'interests',
             'dislikes',
-            'max_budget'
+            'max_budget',
+            'country',
+            'language'
         ]
 
         for field in required_fields:
@@ -39,7 +41,9 @@ def submit_answers():
             location=data['location'],
             recipient_age=data['recipient_age'],
             relationship=data['relationship'],
-            max_budget=data['max_budget']
+            max_budget=data['max_budget'],
+            country=data['country'],
+            language=data['language']
         )
 
         # Set interests and dislikes using the new methods

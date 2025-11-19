@@ -19,6 +19,8 @@ def generate_suggestions(id):
             'interests': recommendation["interests"],
             'dislikes': recommendation["dislikes"],
             'max_budget': recommendation["max_budget"],
+            'country': recommendation["country"],
+            'language': recommendation["language"]
         }
 
         suggestions = generate_gift_suggestions(answers)

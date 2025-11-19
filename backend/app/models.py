@@ -1,5 +1,5 @@
 from app import db
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import uuid
 
@@ -16,7 +16,9 @@ class GiftRecommendation(db.Model):
     interests = db.Column(db.Text, nullable=False)
     dislikes = db.Column(db.Text, nullable=False)
     max_budget = db.Column(db.Float, nullable=False)
-    created_at = db. Column(db.DateTime, default=datetime.utcnow)
+    created_at = db. Column(db.DateTime, default=datetime.now(timezone.utc))
+    country = db.Column(db.String(2), nullable=False) # ISO 3166-2, 2 letter country abbreviation E.g... USA = "US", Brazil = "BR"
+    language = db.Column(db.String(2), nullable=False) # ISO 639-1, 2 letter language abbreviation. E.g... English = "en", Portuguese = "pt"
 
     def set_interests(self, interests_list):
         """Convert list to JSON string for storage"""
@@ -45,5 +47,7 @@ class GiftRecommendation(db.Model):
             'interests': self.interests,
             'dislikes': self.dislikes,
             'max_budget': self.max_budget,
-            'created_at': self.created_at.isoformat()
+            'created_at': self.created_at.isoformat(),
+            'country': self.country,
+            'language': self.language
         }
