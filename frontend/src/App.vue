@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld />
+      <UserInputStepper />
     </v-main>
 
     <AppFooter />
@@ -9,5 +9,7 @@
 </template>
 
 <script setup>
-  //
+import UserInputStepper from './components/UserInputStepper.vue';
+
+//
 </script>
