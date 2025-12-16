@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <UserInputStepper />
+      <GiftWizard />
     </v-main>
 
     <AppFooter />
@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import UserInputStepper from './components/UserInputStepper.vue';
+import GiftWizard from './components/Stepper/GiftWizard.vue';
 
 //
 </script>
